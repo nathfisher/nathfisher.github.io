@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="fira/fira.css"></link>
+	<style type="text/css">
+
+		html, body{
+			margin: 0;
+			padding:0;
+			width:100%;
+			height:100%;
+		}
+
+		body {
+			background-color: black;
+			font-family: 'fira sans', helvetica, sans-serif;
+		}
+
+		#content{
+			min-height: 400px;
+			max-height: 100%;
+			height:100%;
+			width:100%;
+			display: table;
+			color:white;
+			transition-property:background-color;
+			transition-duration:600ms;
+			background-color: rgba(0,0,0,1);
+		}
+		#content.faded {
+					background-color: rgba(0,0,0,0.8);
+background: -moz-linear-gradient(left,  rgba(0,0,0,1) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,0.8) 90%, rgba(0,0,0,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,0,0,1)), color-stop(30%,rgba(0,0,0,1)), color-stop(90%,rgba(0,0,0,0.8)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  rgba(0,0,0,1) 0%,rgba(0,0,0,1) 30%,rgba(0,0,0,0.8) 90%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  rgba(0,0,0,1) 0%,rgba(0,0,0,1) 30%,rgba(0,0,0,0.8) 90%,rgba(0,0,0,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  rgba(0,0,0,1) 0%,rgba(0,0,0,1) 30%,rgba(0,0,0,0.8) 90%,rgba(0,0,0,1) 100%); /* IE10+ */
+background: linear-gradient(to right,  rgba(0,0,0,1) 0%,rgba(0,0,0,1) 30%,rgba(0,0,0,0.8) 90%,rgba(0,0,0,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 */
+		}
+
+
+		#content > div {
+			display: table-cell;
+			vertical-align: middle;
+		}
+
+		#text {
+			width:40%;
+		}
+
+		h1 {
+			font-size: 4em;
+			font-weight: 200;
+		}
+
+		.bg {
+			display: block;
+			color:rgba(0,0,0,0);
+			background-position: 50%;
+			background-size: contain;
+			background-repeat: no-repeat;
+			width:100%;
+			height:100%;
+		}
+
+		#nathan {
+			width:40%;
+			background-image: url(img/nathan.svg);
+		}
+
+		#links {
+			width:20%;
+			text-align: right;
+		}
+		#links .bg {
+			height:20%;
+			margin:12% 0;
+		}
+
+		.flickr {
+			background-image: url(img/flickr.svg);
+		}
+		.twitter {
+			background-image: url(img/twitter.svg);
+		}
+		.facebook {
+			background-image: url(img/facebook.svg);
+		}
+		.github {
+			background-image: url(img/github.svg);
+		}
+
+		.purple {
+			color:#D200F7;
+		}
+		.green {
+			color:#38FF2E;
+		}
+		.yellow {
+			color:#FFFF3F;
+		}
+		.blue {
+			color:#45F9FD;
+		}
+
+		a:link{
+			text-decoration: none;
+		}
+
+		#site-preview {
+			position: absolute;
+			top:0;
+			left:30%;
+			width: 70%;
+			height: 90%;
+			z-index: -1;
+			border:0;
+			margin:0;
+			padding-top:2%;
+			overflow: hidden;
+		}
+		#site-preview .bg{
+			background-position: 90% 50%;
+		}
+
+	</style>
+
+
+</head>
+<body>
+	<div id="content">
+		<div id="nathan" class="bg lg"></div>
+		<div id="text">
+			<h1>Nathan Fisher</h1>
+			<p>Frontend Engineer working at <a class="green" href="http://quantifind.com">Quantifind</a> in San Francisco</p>
+		</div>
+		<div id="links">
+			<a class="twitter bg" href="http://twitter.com/nathfisher" preview="twitter">Twitter</a>
+			<a class="flickr bg" href="http://flickr.com/nathfisher" preview="flickr">Flickr</a>
+			<a class="facebook bg" href="http://facebook.com/nathfisher" preview="facebook">Facebook</a>
+			<a class="github bg" href="http://github.com/nathfisher" preview="github">Github</a>
+		</div>
+	</div>
+	<div id="site-preview"></div>
+	<script type="text/javascript">
+		(function(){
+
+			var getEvtTarget=function(e){
+				var targ;
+				if (!e) var e = window.event;
+				if (e.target) targ = e.target;
+				else if (e.srcElement) targ = e.srcElement;
+				if (targ.nodeType == 3) // defeat Safari bug
+					targ = targ.parentNode;
+				return targ;
+			}
+
+			var content = document.getElementById("content");
+			if(!content.classList || !content.classList.add){return};
+			var preview = document.getElementById("site-preview");
+			var links = document.getElementById("links");
+			links.addEventListener('mouseover', function(evt){
+				var link = getEvtTarget(evt);
+				if(link.nodeName.toLowerCase()==='a'){
+					var src = link.attributes.preview.value
+					var html='<div class="'+src+' bg"></div>';
+					preview.innerHTML = html;
+					content.classList.add('faded');
+				}
+			}, false);
+			links.addEventListener('mouseout', function(evt){
+				var link = getEvtTarget(evt);
+				if(link.nodeName.toLowerCase()==='a'){
+					preview.innerHTML = '';
+					content.classList.remove('faded');
+				}
+			}, false);
+		})();
+	</script>
+</body>
+</html>
