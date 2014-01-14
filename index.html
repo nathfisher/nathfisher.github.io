@@ -222,7 +222,8 @@
 			if(!content.classList || !content.classList.add){return};
 			var preview = document.getElementById("site-preview");
 			var links = document.getElementById("links");
-			links.addEventListener('mouseover', function(evt){
+
+			var over = function(evt){
 				var link = getEvtTarget(evt);
 				if(link.nodeName.toLowerCase()==='a'){
 					var src = link.attributes.preview.value
@@ -230,14 +231,20 @@
 					preview.innerHTML = html;
 					content.classList.add('faded');
 				}
-			}, false);
-			links.addEventListener('mouseout', function(evt){
+			};
+
+			var out = function(evt){
 				var link = getEvtTarget(evt);
 				if(link.nodeName.toLowerCase()==='a'){
 					preview.innerHTML = '';
 					content.classList.remove('faded');
 				}
-			}, false);
+			};
+
+			links.addEventListener('mouseover', over , false);
+			links.addEventListener('focus', over , true);
+			links.addEventListener('mouseout', out , false);
+			links.addEventListener('blur', out , true);
 
 
 			var nathan = document.getElementById('nathan');
